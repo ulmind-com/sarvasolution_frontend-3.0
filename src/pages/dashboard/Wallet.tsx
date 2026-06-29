@@ -34,6 +34,7 @@ interface PayoutRecord {
   grossAmount: number;
   adminCharge: number;
   tdsDeducted: number;
+  savingsDeduction?: number;
   netAmount: number;
   status: string;
   createdAt: string;
@@ -193,7 +194,7 @@ const Wallet = () => {
                     </TableRow>
                   ) : (
                     payouts.map((row) => {
-                      const totalDeductions = (row.adminCharge || 0) + (row.tdsDeducted || 0);
+                      const totalDeductions = (row.adminCharge || 0) + (row.tdsDeducted || 0) + (row.savingsDeduction || 0);
                       const isWithdrawal = row.payoutType?.toLowerCase().includes('withdrawal');
 
                       return (
@@ -229,6 +230,9 @@ const Wallet = () => {
                                   <div className="text-xs space-y-1">
                                     <p>TDS: ₹{(row.tdsDeducted || 0).toLocaleString()}</p>
                                     <p>Admin: ₹{(row.adminCharge || 0).toLocaleString()}</p>
+                                    {(row.savingsDeduction || 0) > 0 && (
+                                      <p>Savings: ₹{(row.savingsDeduction || 0).toLocaleString()}</p>
+                                    )}
                                   </div>
                                 </TooltipContent>
                               </Tooltip>

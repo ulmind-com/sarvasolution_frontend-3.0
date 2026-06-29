@@ -24,6 +24,7 @@ import DirectTeam from "./pages/dashboard/DirectTeam";
 import CompleteTeam from "./pages/dashboard/CompleteTeam";
 import Store from "./pages/dashboard/Store";
 import Wallet from "./pages/dashboard/Wallet";
+import SavingsWallet from "./pages/dashboard/SavingsWallet";
 import UpdateProfile from "./pages/dashboard/UpdateProfile";
 import ChangePassword from "./pages/dashboard/ChangePassword";
 import CappingReport from "./pages/dashboard/CappingReport";
@@ -175,6 +176,13 @@ const AppRoutes = () => {
         <ProtectedRoute>
           <DashboardLayout>
             <Wallet />
+          </DashboardLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/dashboard/savings-wallet" element={
+        <ProtectedRoute>
+          <DashboardLayout>
+            <SavingsWallet />
           </DashboardLayout>
         </ProtectedRoute>
       } />

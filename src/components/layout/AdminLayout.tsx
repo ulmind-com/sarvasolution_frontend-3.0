@@ -45,6 +45,7 @@ import {
   Trophy,
   Network,
   Banknote,
+  PiggyBank,
   Settings
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -74,6 +75,7 @@ const simpleMenuItems: MenuItem[] = [
   { path: '/admin/user-wallets', label: 'User Wallets', icon: Wallet },
   { path: '/admin/wallet-logs', label: 'Wallet Logs', icon: Clock },
   { path: '/admin/wallet-adjustments', label: 'Wallet Adjustments', icon: Wallet },
+  { path: '/admin/savings-wallet-adjustments', label: 'Savings Wallet Adjustments', icon: PiggyBank },
   { path: '/admin/payouts', label: 'Payout Requests', icon: CreditCard },
   { path: '/admin/franchise-payout-requests', label: 'Franchise Payout Requests', icon: Banknote },
   { path: '/admin/profile', label: 'My Profile', icon: UserCog },

@@ -95,6 +95,15 @@ export const getSavingsWalletHistory = async () => {
   return [];
 };
 
+// Savings Wallet (ISOLATED feature) — manual admin adjustments
+export const getSavingsWalletAdjustments = async () => {
+  const response = await api.get('/api/v1/user/savings-wallet/adjustments');
+  const body = response.data;
+  if (body?.data && Array.isArray(body.data)) return body.data;
+  if (Array.isArray(body)) return body;
+  return [];
+};
+
 // Fetch direct team by leg
 export const getDirectTeam = async (page = 1, limit = 10, leg?: 'all' | 'left' | 'right') => {
   const params: Record<string, any> = { page, limit };

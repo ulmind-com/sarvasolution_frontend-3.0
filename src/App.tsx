@@ -79,6 +79,7 @@ import AdminHouseFund from "./pages/admin/bonus/AdminHouseFund";
 import AdminRoyaltyFund from "./pages/admin/bonus/AdminRoyaltyFund";
 import AdminSsvplSuperBonus from "./pages/admin/bonus/AdminSsvplSuperBonus";
 import WalletAdjustment from "./pages/admin/WalletAdjustment";
+import SavingsWalletAdjustment from "./pages/admin/SavingsWalletAdjustment";
 
 // Admin - Products
 import AddProduct from "./pages/admin/products/AddProduct";
@@ -353,6 +354,13 @@ const AppRoutes = () => {
         <ProtectedRoute requireAdmin>
           <AdminLayout>
             <WalletAdjustment />
+          </AdminLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/savings-wallet-adjustments" element={
+        <ProtectedRoute requireAdmin>
+          <AdminLayout>
+            <SavingsWalletAdjustment />
           </AdminLayout>
         </ProtectedRoute>
       } />

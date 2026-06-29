@@ -9,8 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { PiggyBank, ArrowUpRight, Loader2, History } from 'lucide-react';
-import { getSavingsWallet, getSavingsWalletHistory } from '@/services/userService';
+import { PiggyBank, ArrowUpRight, Loader2, History, PlusCircle, MinusCircle } from 'lucide-react';
+import { getSavingsWallet, getSavingsWalletHistory, getSavingsWalletAdjustments } from '@/services/userService';
 import { formatDateIST } from '@/lib/dateUtils';
 
 interface SavingsSummary {
@@ -29,9 +29,19 @@ interface SavingsCredit {
   createdAt_IST?: string;
 }
 
+interface AdjustmentLog {
+  _id: string;
+  admin?: { fullName: string; memberId: string };
+  action: 'Credit' | 'Debit';
+  amount: number;
+  remarks: string;
+  createdAt: string;
+}
+
 const SavingsWallet = () => {
   const [summary, setSummary] = useState<SavingsSummary>({ balance: 0, totalCredited: 0 });
   const [history, setHistory] = useState<SavingsCredit[]>([]);
+  const [adjustments, setAdjustments] = useState<AdjustmentLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -41,15 +51,17 @@ const SavingsWallet = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const [walletData, historyData] = await Promise.all([
+      const [walletData, historyData, adjustmentsData] = await Promise.all([
         getSavingsWallet(),
         getSavingsWalletHistory(),
+        getSavingsWalletAdjustments(),
       ]);
       setSummary({
         balance: walletData?.balance || 0,
         totalCredited: walletData?.totalCredited || 0,
       });
       setHistory(Array.isArray(historyData) ? historyData : []);
+      setAdjustments(Array.isArray(adjustmentsData) ? adjustmentsData : []);
     } catch (error) {
       console.error('Error fetching savings wallet data:', error);
     } finally {
@@ -150,6 +162,67 @@ const SavingsWallet = () => {
                       </TableCell>
                       <TableCell className="text-right text-foreground">
                         ₹{(row.balanceAfter || 0).toLocaleString()}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Manual Adjustments */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-foreground flex items-center gap-2">
+            <History className="h-5 w-5" /> Manual Adjustments
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="text-muted-foreground">Date &amp; Time</TableHead>
+                  <TableHead className="text-muted-foreground">Action</TableHead>
+                  <TableHead className="text-right text-muted-foreground">Amount</TableHead>
+                  <TableHead className="text-muted-foreground">Remarks</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {adjustments.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
+                      No manual adjustments have been made to your Savings Wallet
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  adjustments.map((log) => (
+                    <TableRow key={log._id}>
+                      <TableCell className="text-muted-foreground text-sm whitespace-nowrap">
+                        {new Date(log.createdAt).toLocaleString()}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          {log.action === 'Credit' ? (
+                            <PlusCircle className="h-4 w-4 text-green-500" />
+                          ) : (
+                            <MinusCircle className="h-4 w-4 text-destructive" />
+                          )}
+                          <span className={log.action === 'Credit' ? 'text-green-600 font-medium' : 'text-red-600 font-medium'}>
+                            {log.action}
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-right text-foreground font-medium">
+                        {log.action === 'Credit' ? '+' : '-'}₹{(log.amount || 0).toLocaleString()}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex flex-col text-sm">
+                          <span className="text-foreground">{log.remarks || 'No remarks provided'}</span>
+                          <span className="text-xs text-muted-foreground mt-0.5">By: {log.admin?.fullName || 'Admin'}</span>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))

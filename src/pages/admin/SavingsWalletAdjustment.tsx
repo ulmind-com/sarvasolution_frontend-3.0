@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, PiggyBank, PlusCircle, MinusCircle, History, CheckCircle } from 'lucide-react';
+import { Loader2, PiggyBank, PlusCircle, MinusCircle, History, CheckCircle, Wallet } from 'lucide-react';
 import { api } from '@/lib/api';
 
 interface AdjustmentLog {
@@ -37,6 +37,8 @@ const SavingsWalletAdjustment = () => {
   const [memberName, setMemberName] = useState<string | null>(null);
   const [isVerifyingMember, setIsVerifyingMember] = useState(false);
   const [memberError, setMemberError] = useState<string | null>(null);
+  const [memberBalance, setMemberBalance] = useState<number | null>(null);
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const fetchLogs = async () => {
@@ -55,12 +57,13 @@ const SavingsWalletAdjustment = () => {
     fetchLogs();
   }, []);
 
-  // Debounced member verification
+  // Debounced member verification + balance fetch
   useEffect(() => {
     const memberId = formData.memberId.trim();
     if (!memberId) {
       setMemberName(null);
       setMemberError(null);
+      setMemberBalance(null);
       return;
     }
 
@@ -70,10 +73,25 @@ const SavingsWalletAdjustment = () => {
       setIsVerifyingMember(true);
       setMemberName(null);
       setMemberError(null);
+      setMemberBalance(null);
       try {
         const res = await api.get(`/api/v1/user-name/${encodeURIComponent(memberId)}`);
         if (res.data?.success && res.data?.data?.fullName) {
           setMemberName(res.data.data.fullName);
+
+          // Fetch Repurchase Wallet balance (isolated API)
+          setIsLoadingBalance(true);
+          try {
+            const balRes = await api.get(`/api/v1/admin/repurchase-wallet-balance/${encodeURIComponent(memberId)}`);
+            if (balRes.data?.success && balRes.data?.data != null) {
+              setMemberBalance(balRes.data.data.balance ?? 0);
+            }
+          } catch {
+            // Balance fetch failed — non-critical, just don't show it
+            setMemberBalance(null);
+          } finally {
+            setIsLoadingBalance(false);
+          }
         } else {
           setMemberError('Invalid Member ID');
         }
@@ -110,6 +128,7 @@ const SavingsWalletAdjustment = () => {
 
       // Reset form and fetch updated logs
       setFormData({ memberId: '', action: 'Credit', amount: '', remarks: '' });
+      setMemberBalance(null);
       fetchLogs();
     } catch (error: any) {
       toast({
@@ -127,17 +146,17 @@ const SavingsWalletAdjustment = () => {
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
           <PiggyBank className="h-6 w-6 text-primary" />
-          Savings Wallet Management
+          Repurchase Wallet Management
         </h1>
-        <p className="text-muted-foreground">Manually add or deduct funds from a user's Savings Wallet (Isolated Feature)</p>
+        <p className="text-muted-foreground">Manually add or deduct funds from a user's Repurchase Wallet (Isolated Feature)</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Adjustment Form */}
         <Card className="lg:col-span-1">
           <CardHeader>
-            <CardTitle>Adjust Savings Balance</CardTitle>
-            <CardDescription>Credit or Debit a user's Savings Wallet balance securely.</CardDescription>
+            <CardTitle>Adjust Repurchase Balance</CardTitle>
+            <CardDescription>Credit or Debit a user's Repurchase Wallet balance securely.</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -162,6 +181,28 @@ const SavingsWalletAdjustment = () => {
                 )}
                 {!isVerifyingMember && memberError && (
                   <p className="text-xs text-destructive mt-1">{memberError}</p>
+                )}
+
+                {/* Repurchase Wallet Balance Display */}
+                {!isVerifyingMember && memberName && (
+                  <div className="mt-2 p-3 rounded-lg bg-muted/50 border">
+                    <div className="flex items-center gap-2 text-sm">
+                      <Wallet className="h-4 w-4 text-primary" />
+                      <span className="text-muted-foreground font-medium">Repurchase Wallet Balance:</span>
+                    </div>
+                    {isLoadingBalance ? (
+                      <div className="flex items-center gap-1 mt-1">
+                        <Loader2 className="h-3 w-3 animate-spin text-muted-foreground" />
+                        <span className="text-xs text-muted-foreground">Loading balance...</span>
+                      </div>
+                    ) : memberBalance !== null ? (
+                      <p className="text-lg font-bold text-foreground mt-1">
+                        ₹{memberBalance.toLocaleString()}
+                      </p>
+                    ) : (
+                      <p className="text-xs text-muted-foreground mt-1">Balance unavailable</p>
+                    )}
+                  </div>
                 )}
               </div>
 
@@ -222,7 +263,7 @@ const SavingsWalletAdjustment = () => {
               <History className="h-5 w-5" />
               Adjustment History
             </CardTitle>
-            <CardDescription>Recent manual Savings Wallet interventions.</CardDescription>
+            <CardDescription>Recent manual Repurchase Wallet interventions.</CardDescription>
           </CardHeader>
           <CardContent>
             {logsLoading ? (

@@ -87,7 +87,7 @@ const SavingsWallet = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Savings Wallet</h1>
+        <h1 className="text-2xl font-bold text-foreground">Repurchase Wallet</h1>
         <p className="text-muted-foreground">
           An extra 10% of every income's gross amount is auto-deposited here.
         </p>
@@ -194,7 +194,7 @@ const SavingsWallet = () => {
                 {adjustments.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
-                      No manual adjustments have been made to your Savings Wallet
+                      No manual adjustments have been made to your Repurchase Wallet
                     </TableCell>
                   </TableRow>
                 ) : (

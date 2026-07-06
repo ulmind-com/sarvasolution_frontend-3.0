@@ -65,7 +65,7 @@ const menuItems: MenuItem[] = [
   { path: '/dashboard/purchase-history', label: 'Purchase History', icon: ShoppingBag },
   { path: '/user/products', label: 'Product Store', icon: ShoppingBag },
   { path: '/dashboard/wallet', label: 'Wallet', icon: Wallet },
-  { path: '/dashboard/savings-wallet', label: 'Savings Wallet', icon: PiggyBank },
+  { path: '/dashboard/savings-wallet', label: 'Repurchase Wallet', icon: PiggyBank },
   {
     label: 'My Incomes',
     icon: IndianRupee,

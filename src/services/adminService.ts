@@ -537,6 +537,12 @@ export const getAdminTreeBVSummary = async (memberId: string) => {
   return response.data;
 };
 
+// Fetch Personal BV Summary for a specific user (Admin) — isolated feature
+export const getAdminPersonalBVSummary = async (memberId: string) => {
+  const response = await api.get(`/api/v1/admin/personal-bv-summary/${memberId}`);
+  return response.data;
+};
+
 // ===== Admin Franchise Payout APIs =====
 
 export const getAdminFranchisePayoutList = async (page = 1, limit = 10, status?: string) => {

@@ -372,9 +372,18 @@ export const getMyPurchases = async (page = 1, limit = 20) => {
 
 // Fetch Tree BV Summary for the user
 export const getUserTreeBVSummary = async (memberId?: string) => {
-  const url = memberId 
-    ? `/api/v1/user/tree-bv-summary/${memberId}` 
+  const url = memberId
+    ? `/api/v1/user/tree-bv-summary/${memberId}`
     : '/api/v1/user/tree-bv-summary';
+  const response = await api.get(url);
+  return response.data;
+};
+
+// Fetch Personal BV Summary (own purchases, date-bucketed) — isolated feature
+export const getUserPersonalBVSummary = async (memberId?: string) => {
+  const url = memberId
+    ? `/api/v1/user/personal-bv-summary/${memberId}`
+    : '/api/v1/user/personal-bv-summary';
   const response = await api.get(url);
   return response.data;
 };

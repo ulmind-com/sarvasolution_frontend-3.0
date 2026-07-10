@@ -140,7 +140,7 @@ const TdsReport = () => {
 
   // ─── User detail ──────────────────────────────────────────────────────
   const fetchUser = async () => {
-    const id = memberId.trim();
+    const id = memberId.trim().toUpperCase();
     if (!id) {
       toast({ title: 'Enter Member ID', description: 'Please enter a member ID to search.' });
       return;
@@ -320,10 +320,11 @@ const TdsReport = () => {
                 <div className="space-y-1 flex-1 max-w-xs">
                   <Label className="text-xs">Member ID</Label>
                   <Input
-                    placeholder="e.g. SSVPL1001"
+                    placeholder="e.g. SVS000001"
                     value={memberId}
-                    onChange={(e) => setMemberId(e.target.value)}
+                    onChange={(e) => setMemberId(e.target.value.toUpperCase())}
                     onKeyDown={(e) => e.key === 'Enter' && fetchUser()}
+                    className="uppercase"
                   />
                 </div>
                 <Button onClick={fetchUser} disabled={userLoading}>

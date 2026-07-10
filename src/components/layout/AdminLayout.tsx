@@ -76,6 +76,7 @@ const simpleMenuItems: MenuItem[] = [
   { path: '/admin/wallet-logs', label: 'Wallet Logs', icon: Clock },
   { path: '/admin/wallet-adjustments', label: 'Wallet Adjustments', icon: Wallet },
   { path: '/admin/savings-wallet-adjustments', label: 'Repurchase Wallet Adjustments', icon: PiggyBank },
+  { path: '/admin/tds-report', label: 'TDS Report', icon: FileText },
   { path: '/admin/payouts', label: 'Payout Requests', icon: CreditCard },
   { path: '/admin/franchise-payout-requests', label: 'Franchise Payout Requests', icon: Banknote },
   { path: '/admin/profile', label: 'My Profile', icon: UserCog },

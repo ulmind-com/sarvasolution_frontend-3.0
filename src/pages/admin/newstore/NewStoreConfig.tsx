@@ -15,7 +15,7 @@ const NewStoreConfig = () => {
   const [secretSet, setSecretSet] = useState(false);
   const [cfg, setCfg] = useState<any>({
     storeEnabled: true, codEnabled: true, onlineEnabled: true,
-    razorpayKeyId: '', razorpayKeySecret: '', shippingFee: 0, storeName: 'Sarva Store',
+    razorpayKeyId: '', razorpayKeySecret: '', shippingFee: 0, storeName: 'Sarva Store', sellerState: 'West Bengal',
   });
 
   const load = useCallback(async () => {
@@ -26,7 +26,7 @@ const NewStoreConfig = () => {
       setSecretSet(!!d.razorpayKeySecretSet);
       setCfg({
         storeEnabled: d.storeEnabled ?? true, codEnabled: d.codEnabled ?? true, onlineEnabled: d.onlineEnabled ?? true,
-        razorpayKeyId: d.razorpayKeyId || '', razorpayKeySecret: '', shippingFee: d.shippingFee || 0, storeName: d.storeName || 'Sarva Store',
+        razorpayKeyId: d.razorpayKeyId || '', razorpayKeySecret: '', shippingFee: d.shippingFee || 0, storeName: d.storeName || 'Sarva Store', sellerState: d.sellerState || 'West Bengal',
       });
     } catch {
       toast({ title: 'Failed to load config', variant: 'destructive' });
@@ -42,7 +42,7 @@ const NewStoreConfig = () => {
     try {
       const payload: any = {
         storeEnabled: cfg.storeEnabled, codEnabled: cfg.codEnabled, onlineEnabled: cfg.onlineEnabled,
-        razorpayKeyId: cfg.razorpayKeyId, shippingFee: Number(cfg.shippingFee) || 0, storeName: cfg.storeName,
+        razorpayKeyId: cfg.razorpayKeyId, shippingFee: Number(cfg.shippingFee) || 0, storeName: cfg.storeName, sellerState: cfg.sellerState,
       };
       // Only send the secret if the admin typed a new one (blank keeps the existing).
       if (cfg.razorpayKeySecret) payload.razorpayKeySecret = cfg.razorpayKeySecret;
@@ -104,6 +104,11 @@ const NewStoreConfig = () => {
         <CardHeader><CardTitle>Store</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           <div><Label>Store name</Label><Input value={cfg.storeName} onChange={(e) => setCfg({ ...cfg, storeName: e.target.value })} /></div>
+          <div>
+            <Label>Seller state (place of supply)</Label>
+            <Input value={cfg.sellerState} onChange={(e) => setCfg({ ...cfg, sellerState: e.target.value })} />
+            <p className="text-xs text-muted-foreground mt-1">Orders within this state charge CGST+SGST; outside charge IGST.</p>
+          </div>
           <div><Label>Shipping fee (₹)</Label><Input type="number" value={cfg.shippingFee} onChange={(e) => setCfg({ ...cfg, shippingFee: e.target.value })} /></div>
         </CardContent>
       </Card>

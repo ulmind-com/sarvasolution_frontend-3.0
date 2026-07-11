@@ -19,6 +19,9 @@ interface NP {
   price: number;
   mrp: number;
   discount?: number;
+  cgst?: number;
+  sgst?: number;
+  igst?: number;
   category?: string;
   stockQuantity: number;
   isActive: boolean;
@@ -26,7 +29,7 @@ interface NP {
   productImage?: { url?: string };
 }
 
-const empty = { productName: '', description: '', price: '', mrp: '', discount: '0', category: '', stockQuantity: '0', isFeatured: false, isActive: true };
+const empty = { productName: '', description: '', price: '', mrp: '', discount: '0', cgst: '0', sgst: '0', igst: '0', category: '', stockQuantity: '0', isFeatured: false, isActive: true };
 
 const NewStoreProducts = () => {
   const { toast } = useToast();
@@ -57,7 +60,8 @@ const NewStoreProducts = () => {
     setEditing(p);
     setForm({
       productName: p.productName, description: p.description || '', price: String(p.price), mrp: String(p.mrp),
-      discount: String(p.discount || 0), category: p.category || '', stockQuantity: String(p.stockQuantity),
+      discount: String(p.discount || 0), cgst: String(p.cgst || 0), sgst: String(p.sgst || 0), igst: String(p.igst || 0),
+      category: p.category || '', stockQuantity: String(p.stockQuantity),
       isFeatured: !!p.isFeatured, isActive: p.isActive,
     });
     setFile(null);
@@ -76,7 +80,7 @@ const NewStoreProducts = () => {
     setSaving(true);
     try {
       const fd = new FormData();
-      ['productName', 'description', 'price', 'mrp', 'discount', 'category', 'stockQuantity'].forEach((k) => fd.append(k, form[k]));
+      ['productName', 'description', 'price', 'mrp', 'discount', 'cgst', 'sgst', 'igst', 'category', 'stockQuantity'].forEach((k) => fd.append(k, form[k]));
       fd.append('isFeatured', String(form.isFeatured));
       fd.append('isActive', String(form.isActive));
       if (file) fd.append('productImage', file);
@@ -183,6 +187,12 @@ const NewStoreProducts = () => {
               <div><Label>Category</Label><Input value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} /></div>
               <div><Label>Stock quantity</Label><Input type="number" value={form.stockQuantity} onChange={(e) => setForm({ ...form, stockQuantity: e.target.value })} /></div>
             </div>
+            <div className="grid grid-cols-3 gap-3">
+              <div><Label>CGST %</Label><Input type="number" value={form.cgst} onChange={(e) => setForm({ ...form, cgst: e.target.value })} /></div>
+              <div><Label>SGST %</Label><Input type="number" value={form.sgst} onChange={(e) => setForm({ ...form, sgst: e.target.value })} /></div>
+              <div><Label>IGST %</Label><Input type="number" value={form.igst} onChange={(e) => setForm({ ...form, igst: e.target.value })} /></div>
+            </div>
+            <p className="text-xs text-muted-foreground">Delivery within West Bengal applies CGST + SGST; outside West Bengal applies IGST.</p>
             <div>
               <Label>Product image {editing ? '(leave empty to keep current)' : ''}</Label>
               <Input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] || null)} />

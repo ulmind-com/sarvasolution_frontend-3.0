@@ -16,11 +16,20 @@ interface Order {
   address: { line1: string; line2?: string; city: string; state: string; pincode: string };
   items: { productName: string; price: number; quantity: number }[];
   itemsTotal: number;
+  taxType?: 'intra' | 'inter';
+  cgstTotal?: number;
+  sgstTotal?: number;
+  igstTotal?: number;
+  taxTotal?: number;
+  sellerState?: string;
   shippingFee: number;
   totalAmount: number;
   paymentMethod: 'cod' | 'razorpay';
   paymentStatus: 'pending' | 'paid' | 'failed';
   orderStatus: 'placed' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
+  razorpayOrderId?: string;
+  razorpayPaymentId?: string;
+  razorpaySignature?: string;
   createdAt: string;
 }
 
@@ -135,9 +144,35 @@ const GuestOrders = () => {
                     <span>₹{it.price * it.quantity}</span>
                   </div>
                 ))}
+                <div className="flex justify-between p-2 text-muted-foreground"><span>Subtotal</span><span>₹{sel.itemsTotal}</span></div>
+                {sel.taxType === 'intra' ? (
+                  <>
+                    {sel.cgstTotal ? <div className="flex justify-between p-2 text-muted-foreground"><span>CGST</span><span>₹{sel.cgstTotal}</span></div> : null}
+                    {sel.sgstTotal ? <div className="flex justify-between p-2 text-muted-foreground"><span>SGST</span><span>₹{sel.sgstTotal}</span></div> : null}
+                  </>
+                ) : sel.igstTotal ? (
+                  <div className="flex justify-between p-2 text-muted-foreground"><span>IGST</span><span>₹{sel.igstTotal}</span></div>
+                ) : null}
                 <div className="flex justify-between p-2 text-muted-foreground"><span>Shipping</span><span>₹{sel.shippingFee}</span></div>
                 <div className="flex justify-between p-2 font-bold"><span>Total</span><span>₹{sel.totalAmount}</span></div>
               </div>
+              {sel.taxType ? (
+                <p className="text-xs text-muted-foreground -mt-2">
+                  {sel.taxType === 'intra' ? `Intra-state (within ${sel.sellerState || 'seller state'}) — CGST + SGST` : `Inter-state (outside ${sel.sellerState || 'seller state'}) — IGST`}
+                </p>
+              ) : null}
+
+              {/* Razorpay payment details (A–Z) */}
+              {sel.paymentMethod === 'razorpay' ? (
+                <div className="rounded-lg border bg-muted/30 p-3 space-y-1.5">
+                  <p className="font-semibold flex items-center gap-2">Razorpay Payment
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full ${sel.paymentStatus === 'paid' ? 'bg-green-500/20 text-green-700' : 'bg-yellow-500/20 text-yellow-700'}`}>{sel.paymentStatus}</span>
+                  </p>
+                  <KV label="Razorpay Order ID" value={sel.razorpayOrderId} />
+                  <KV label="Payment ID" value={sel.razorpayPaymentId} />
+                  <KV label="Signature" value={sel.razorpaySignature} />
+                </div>
+              ) : null}
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -165,5 +200,12 @@ const GuestOrders = () => {
     </div>
   );
 };
+
+const KV = ({ label, value }: { label: string; value?: string }) => (
+  <div className="flex items-start justify-between gap-3 text-xs">
+    <span className="text-muted-foreground shrink-0">{label}</span>
+    <span className="font-mono break-all text-right">{value || '—'}</span>
+  </div>
+);
 
 export default GuestOrders;

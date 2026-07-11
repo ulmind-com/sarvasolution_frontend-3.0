@@ -95,6 +95,15 @@ const menuSections: MenuSection[] = [
     ],
   },
   {
+    label: 'Guest Store',
+    icon: Store,
+    items: [
+      { path: '/admin/newstore/products', label: 'Store Products', icon: Package },
+      { path: '/admin/newstore/orders', label: 'Guest Orders', icon: ShoppingCart },
+      { path: '/admin/newstore/settings', label: 'Store Settings', icon: Settings },
+    ],
+  },
+  {
     label: 'Franchise Management',
     icon: Store,
     items: [

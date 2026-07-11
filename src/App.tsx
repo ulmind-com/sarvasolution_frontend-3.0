@@ -85,6 +85,9 @@ import TdsReport from "./pages/admin/TdsReport";
 // Admin - Products
 import AddProduct from "./pages/admin/products/AddProduct";
 import ProductList from "./pages/admin/products/ProductList";
+import NewStoreProducts from "./pages/admin/newstore/NewStoreProducts";
+import GuestOrders from "./pages/admin/newstore/GuestOrders";
+import NewStoreConfig from "./pages/admin/newstore/NewStoreConfig";
 
 // Admin - Stock
 import StockDashboard from "./pages/admin/stock/StockDashboard";
@@ -524,6 +527,29 @@ const AppRoutes = () => {
         <ProtectedRoute requireAdmin>
           <AdminLayout>
             <ProductList />
+          </AdminLayout>
+        </ProtectedRoute>
+      } />
+
+      {/* Admin - Guest Store (public no-login store) */}
+      <Route path="/admin/newstore/products" element={
+        <ProtectedRoute requireAdmin>
+          <AdminLayout>
+            <NewStoreProducts />
+          </AdminLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/newstore/orders" element={
+        <ProtectedRoute requireAdmin>
+          <AdminLayout>
+            <GuestOrders />
+          </AdminLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/newstore/settings" element={
+        <ProtectedRoute requireAdmin>
+          <AdminLayout>
+            <NewStoreConfig />
           </AdminLayout>
         </ProtectedRoute>
       } />

@@ -92,7 +92,7 @@ const GuestOrders = () => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Order</TableHead><TableHead>Customer</TableHead><TableHead>Total</TableHead>
+                    <TableHead>Order</TableHead><TableHead>Date &amp; Time</TableHead><TableHead>Customer</TableHead><TableHead>Total</TableHead>
                     <TableHead>Payment</TableHead><TableHead>Status</TableHead><TableHead className="text-right">View</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -100,6 +100,9 @@ const GuestOrders = () => {
                   {orders.map((o) => (
                     <TableRow key={o._id}>
                       <TableCell className="font-mono text-xs">{o.orderId}</TableCell>
+                      <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
+                        {o.createdAt ? new Date(o.createdAt).toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—'}
+                      </TableCell>
                       <TableCell>
                         <div className="font-medium">{o.customer.name}</div>
                         <div className="text-xs text-muted-foreground">{o.customer.phone}</div>
@@ -129,6 +132,9 @@ const GuestOrders = () => {
           <DialogHeader><DialogTitle>Order {sel?.orderId}</DialogTitle></DialogHeader>
           {sel ? (
             <div className="space-y-4 text-sm">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b pb-2">
+                <span>Placed on {sel.createdAt ? new Date(sel.createdAt).toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—'}</span>
+              </div>
               <div>
                 <p className="font-semibold">{sel.customer.name}</p>
                 <p className="text-muted-foreground">{sel.customer.phone}{sel.customer.email ? ` · ${sel.customer.email}` : ''}</p>

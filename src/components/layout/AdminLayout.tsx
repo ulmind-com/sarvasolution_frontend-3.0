@@ -229,7 +229,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     section.items.some((item) => location.pathname.startsWith(item.path));
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="h-screen overflow-hidden bg-background flex">
       {/* Mobile Overlay */}
       {mobileOpen && (
         <div
@@ -265,7 +265,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+        <nav className="flex-1 p-4 space-y-2 overflow-y-auto overscroll-contain">
           {/* Simple Menu Items */}
           {simpleMenuItems.map((item) => {
             const isActive = isPathActive(item.path);
@@ -426,7 +426,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         </header>
 
         {/* Page Content with transition */}
-        <main className="flex-1 p-4 lg:p-6 overflow-auto">
+        <main className="flex-1 p-4 lg:p-6 overflow-auto overscroll-contain">
           <PageTransition key={location.pathname}>
             {children}
           </PageTransition>

@@ -87,6 +87,7 @@ import AddProduct from "./pages/admin/products/AddProduct";
 import ProductList from "./pages/admin/products/ProductList";
 import NewStoreProducts from "./pages/admin/newstore/NewStoreProducts";
 import GuestOrders from "./pages/admin/newstore/GuestOrders";
+import MemberOrders from "./pages/admin/newstore/MemberOrders";
 import NewStoreConfig from "./pages/admin/newstore/NewStoreConfig";
 
 // Admin - Stock
@@ -543,6 +544,13 @@ const AppRoutes = () => {
         <ProtectedRoute requireAdmin>
           <AdminLayout>
             <GuestOrders />
+          </AdminLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/newstore/member-orders" element={
+        <ProtectedRoute requireAdmin>
+          <AdminLayout>
+            <MemberOrders />
           </AdminLayout>
         </ProtectedRoute>
       } />

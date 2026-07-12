@@ -100,6 +100,7 @@ const menuSections: MenuSection[] = [
     items: [
       { path: '/admin/newstore/products', label: 'Store Products', icon: Package },
       { path: '/admin/newstore/orders', label: 'Guest Orders', icon: ShoppingCart },
+      { path: '/admin/newstore/member-orders', label: 'Member Orders', icon: Users },
       { path: '/admin/newstore/settings', label: 'Store Settings', icon: Settings },
     ],
   },

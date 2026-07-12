@@ -15,6 +15,7 @@ const NewStoreConfig = () => {
   const [secretSet, setSecretSet] = useState(false);
   const [cfg, setCfg] = useState<any>({
     storeEnabled: true, codEnabled: true, onlineEnabled: true,
+    memberCodEnabled: true, memberOnlineEnabled: true,
     razorpayKeyId: '', razorpayKeySecret: '', shippingFee: 0, storeName: 'Sarva Store', sellerState: 'West Bengal',
   });
 
@@ -26,6 +27,7 @@ const NewStoreConfig = () => {
       setSecretSet(!!d.razorpayKeySecretSet);
       setCfg({
         storeEnabled: d.storeEnabled ?? true, codEnabled: d.codEnabled ?? true, onlineEnabled: d.onlineEnabled ?? true,
+        memberCodEnabled: d.memberCodEnabled ?? true, memberOnlineEnabled: d.memberOnlineEnabled ?? true,
         razorpayKeyId: d.razorpayKeyId || '', razorpayKeySecret: '', shippingFee: d.shippingFee || 0, storeName: d.storeName || 'Sarva Store', sellerState: d.sellerState || 'West Bengal',
       });
     } catch {
@@ -42,6 +44,7 @@ const NewStoreConfig = () => {
     try {
       const payload: any = {
         storeEnabled: cfg.storeEnabled, codEnabled: cfg.codEnabled, onlineEnabled: cfg.onlineEnabled,
+        memberCodEnabled: cfg.memberCodEnabled, memberOnlineEnabled: cfg.memberOnlineEnabled,
         razorpayKeyId: cfg.razorpayKeyId, shippingFee: Number(cfg.shippingFee) || 0, storeName: cfg.storeName, sellerState: cfg.sellerState,
       };
       // Only send the secret if the admin typed a new one (blank keeps the existing).
@@ -69,7 +72,7 @@ const NewStoreConfig = () => {
       </div>
 
       <Card>
-        <CardHeader><CardTitle>Availability</CardTitle></CardHeader>
+        <CardHeader><CardTitle>Guest store (no login)</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           <Row label="Store open" desc="When off, guests cannot place orders.">
             <Switch checked={cfg.storeEnabled} onCheckedChange={(v) => setCfg({ ...cfg, storeEnabled: v })} />
@@ -80,6 +83,19 @@ const NewStoreConfig = () => {
           <Row label="Online payment (Razorpay)" desc="Requires Razorpay credentials below.">
             <Switch checked={cfg.onlineEnabled} onCheckedChange={(v) => setCfg({ ...cfg, onlineEnabled: v })} />
           </Row>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader><CardTitle>Member store (logged-in app)</CardTitle></CardHeader>
+        <CardContent className="space-y-4">
+          <Row label="Cash on Delivery (COD)" desc="Members can place COD orders.">
+            <Switch checked={cfg.memberCodEnabled} onCheckedChange={(v) => setCfg({ ...cfg, memberCodEnabled: v })} />
+          </Row>
+          <Row label="Online payment (Razorpay)" desc="Members can pay online (uses the same Razorpay creds).">
+            <Switch checked={cfg.memberOnlineEnabled} onCheckedChange={(v) => setCfg({ ...cfg, memberOnlineEnabled: v })} />
+          </Row>
+          <p className="text-xs text-muted-foreground">Wallet payment is always available to members with a balance.</p>
         </CardContent>
       </Card>
 

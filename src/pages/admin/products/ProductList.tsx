@@ -146,6 +146,7 @@ const ProductList = () => {
       'personal care': 'bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-400',
       'home care': 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
       'luxury goods': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
+      'offer package': 'bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-400',
     };
     return colors[category.toLowerCase()] || 'bg-muted text-muted-foreground';
   };

@@ -35,6 +35,7 @@ const SEGMENTS = [
   { value: 'personal care', label: 'Personal Care' },
   { value: 'home care', label: 'Home Care' },
   { value: 'luxury goods', label: 'Luxury Goods' },
+  { value: 'offer package', label: 'Offer Package' },
 ];
 
 const AddProductModal = ({ open, onOpenChange, onProductCreated }: AddProductModalProps) => {

@@ -17,6 +17,7 @@ const categories = [
   'personal care',
   'home care',
   'luxury goods',
+  'offer package',
 ];
 
 const AddProduct = () => {

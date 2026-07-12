@@ -49,7 +49,7 @@ interface EditProductDialogProps {
   onSuccess: () => void;
 }
 
-const CATEGORIES = ['aquaculture', 'agriculture', 'personal care', 'health care', 'home care', 'luxury goods'];
+const CATEGORIES = ['aquaculture', 'agriculture', 'personal care', 'health care', 'home care', 'luxury goods', 'offer package'];
 
 const EditProductDialog = ({ open, onOpenChange, product, onSuccess }: EditProductDialogProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);

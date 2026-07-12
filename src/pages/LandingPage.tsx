@@ -493,7 +493,7 @@ const LandingPage = () => {
             </div>
 
             <div className="flex justify-center md:justify-end gap-6">
-              <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">Privacy Policy</a>
+              <Link to="/privacy-policy" className="text-slate-400 hover:text-white transition-colors text-sm">Privacy Policy</Link>
               <Link to="/terms-and-conditions" className="text-slate-400 hover:text-white transition-colors text-sm">Terms of Condition</Link>
               <a href="/legal-documents.pdf" download className="text-slate-400 hover:text-white transition-colors text-sm">Legal Documents</a>
             </div>

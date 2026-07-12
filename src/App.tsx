@@ -13,6 +13,7 @@ import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import FranchiseLogin from "./pages/FranchiseLogin";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 
@@ -139,6 +140,7 @@ const AppRoutes = () => {
       <Route path="/join/:referralId" element={<Register />} />
       <Route path="/franchise/login" element={<FranchiseLogin />} />
       <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password/:token" element={<ResetPassword />} />
 

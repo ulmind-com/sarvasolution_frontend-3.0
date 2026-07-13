@@ -24,6 +24,7 @@ interface AdminUser {
   email: string;
   phone: string;
   currentRank: string;
+  isolatedRank?: string; // rank shown in the genealogy tree; canonical for display
   status: 'active' | 'inactive';
   createdAt: string;
   isFirstPurchaseDone?: boolean;
@@ -174,7 +175,7 @@ const UserManagement = () => {
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline" className="text-xs">
-                          {user.currentRank || 'Associate'}
+                          {user.isolatedRank || user.currentRank || 'Associate'}
                         </Badge>
                       </TableCell>
                       <TableCell>

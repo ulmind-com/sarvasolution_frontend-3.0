@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { History, Search, Eye, Download, Loader2, FileText, IndianRupee, Package, ChevronLeft, ChevronRight } from 'lucide-react';
+import { History, Search, Eye, Download, Loader2, FileText, IndianRupee, Package, ChevronLeft, ChevronRight, CalendarDays } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -72,6 +72,19 @@ interface Sale {
   };
 }
 
+// Local `YYYY-MM` for the current calendar month (used as the default filter).
+const currentMonthValue = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+};
+
+interface MonthlySummary {
+  month: string;
+  monthLabel: string;
+  totalAmount: number;
+  invoiceCount: number;
+}
+
 const SaleHistory = () => {
   const [sales, setSales] = useState<Sale[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -82,9 +95,32 @@ const SaleHistory = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
 
+  // Month-wise sales summary (isolated endpoint). Defaults to the current month.
+  const [selectedMonth, setSelectedMonth] = useState<string>(currentMonthValue());
+  const [monthlySummary, setMonthlySummary] = useState<MonthlySummary | null>(null);
+  const [monthLoading, setMonthLoading] = useState(false);
+
   useEffect(() => {
     fetchSales();
   }, [currentPage]);
+
+  useEffect(() => {
+    fetchMonthlySummary(selectedMonth);
+  }, [selectedMonth]);
+
+  const fetchMonthlySummary = async (month: string) => {
+    setMonthLoading(true);
+    try {
+      const response = await api.get(`/api/v1/admin/franchise-sales-summary/monthly?month=${month}`);
+      const data = response.data?.data || response.data;
+      setMonthlySummary(data || null);
+    } catch (error) {
+      console.error('Error fetching monthly sales summary:', error);
+      setMonthlySummary(null);
+    } finally {
+      setMonthLoading(false);
+    }
+  };
 
   const fetchSales = async () => {
     setIsLoading(true);
@@ -223,6 +259,49 @@ const SaleHistory = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Month-wise sales summary */}
+      <Card className="border-primary/20">
+        <CardContent className="p-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                <CalendarDays className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Sales in selected month</p>
+                {monthLoading ? (
+                  <div className="flex items-center gap-2 h-8">
+                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">Loading…</span>
+                  </div>
+                ) : (
+                  <p className="text-2xl font-bold">
+                    ₹{(monthlySummary?.totalAmount || 0).toLocaleString('en-IN')}
+                    <span className="ml-2 text-sm font-normal text-muted-foreground">
+                      · {monthlySummary?.invoiceCount || 0} invoice{(monthlySummary?.invoiceCount || 0) === 1 ? '' : 's'}
+                      {monthlySummary?.monthLabel ? ` · ${monthlySummary.monthLabel}` : ''}
+                    </span>
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <label htmlFor="sale-month" className="text-sm text-muted-foreground">
+                Month
+              </label>
+              <Input
+                id="sale-month"
+                type="month"
+                value={selectedMonth}
+                max={currentMonthValue()}
+                onChange={(e) => setSelectedMonth(e.target.value || currentMonthValue())}
+                className="w-[170px]"
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Search */}
       <div className="relative max-w-md">

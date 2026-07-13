@@ -53,7 +53,7 @@ const TermsAndConditions = () => {
           transition={{ duration: 0.4 }}
           className="max-w-3xl mx-auto"
         >
-          <p className="text-slate-400 mb-8 leading-relaxed">
+          <p className="text-slate-400 mb-8 leading-relaxed text-justify">
             Please read the following terms and conditions carefully before registering or
             participating in any activity with Sarva Solution Vision Pvt. Ltd.
           </p>
@@ -70,7 +70,7 @@ const TermsAndConditions = () => {
                 <span className="flex-shrink-0 w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">
                   {index + 1}
                 </span>
-                <p className="text-slate-300 leading-relaxed">{term}</p>
+                <p className="text-slate-300 leading-relaxed text-justify">{term}</p>
               </motion.li>
             ))}
           </ol>

@@ -16,7 +16,7 @@ const NewStoreConfig = () => {
   const [cfg, setCfg] = useState<any>({
     storeEnabled: true, codEnabled: true, onlineEnabled: true,
     memberCodEnabled: true, memberOnlineEnabled: true,
-    razorpayKeyId: '', razorpayKeySecret: '', shippingFee: 0, storeName: 'Sarva Store', sellerState: 'West Bengal',
+    razorpayKeyId: '', razorpayKeySecret: '', shippingFee: 0, memberShippingFee: 0, storeName: 'Sarva Store', sellerState: 'West Bengal',
   });
 
   const load = useCallback(async () => {
@@ -28,7 +28,7 @@ const NewStoreConfig = () => {
       setCfg({
         storeEnabled: d.storeEnabled ?? true, codEnabled: d.codEnabled ?? true, onlineEnabled: d.onlineEnabled ?? true,
         memberCodEnabled: d.memberCodEnabled ?? true, memberOnlineEnabled: d.memberOnlineEnabled ?? true,
-        razorpayKeyId: d.razorpayKeyId || '', razorpayKeySecret: '', shippingFee: d.shippingFee || 0, storeName: d.storeName || 'Sarva Store', sellerState: d.sellerState || 'West Bengal',
+        razorpayKeyId: d.razorpayKeyId || '', razorpayKeySecret: '', shippingFee: d.shippingFee || 0, memberShippingFee: d.memberShippingFee || 0, storeName: d.storeName || 'Sarva Store', sellerState: d.sellerState || 'West Bengal',
       });
     } catch {
       toast({ title: 'Failed to load config', variant: 'destructive' });
@@ -45,7 +45,7 @@ const NewStoreConfig = () => {
       const payload: any = {
         storeEnabled: cfg.storeEnabled, codEnabled: cfg.codEnabled, onlineEnabled: cfg.onlineEnabled,
         memberCodEnabled: cfg.memberCodEnabled, memberOnlineEnabled: cfg.memberOnlineEnabled,
-        razorpayKeyId: cfg.razorpayKeyId, shippingFee: Number(cfg.shippingFee) || 0, storeName: cfg.storeName, sellerState: cfg.sellerState,
+        razorpayKeyId: cfg.razorpayKeyId, shippingFee: Number(cfg.shippingFee) || 0, memberShippingFee: Number(cfg.memberShippingFee) || 0, storeName: cfg.storeName, sellerState: cfg.sellerState,
       };
       // Only send the secret if the admin typed a new one (blank keeps the existing).
       if (cfg.razorpayKeySecret) payload.razorpayKeySecret = cfg.razorpayKeySecret;
@@ -125,7 +125,16 @@ const NewStoreConfig = () => {
             <Input value={cfg.sellerState} onChange={(e) => setCfg({ ...cfg, sellerState: e.target.value })} />
             <p className="text-xs text-muted-foreground mt-1">Orders within this state charge CGST+SGST; outside charge IGST.</p>
           </div>
-          <div><Label>Shipping fee (₹)</Label><Input type="number" value={cfg.shippingFee} onChange={(e) => setCfg({ ...cfg, shippingFee: e.target.value })} /></div>
+          <div>
+            <Label>Shipping fee (₹)</Label>
+            <Input type="number" value={cfg.shippingFee} onChange={(e) => setCfg({ ...cfg, shippingFee: e.target.value })} />
+            <p className="text-xs text-muted-foreground mt-1">Applies to guest (without-login) store orders.</p>
+          </div>
+          <div>
+            <Label>Member Shipping fee (₹)</Label>
+            <Input type="number" value={cfg.memberShippingFee} onChange={(e) => setCfg({ ...cfg, memberShippingFee: e.target.value })} />
+            <p className="text-xs text-muted-foreground mt-1">Applies to logged-in members ordering from the app.</p>
+          </div>
         </CardContent>
       </Card>
 

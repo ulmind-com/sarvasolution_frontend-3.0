@@ -89,7 +89,7 @@ const SavingsWallet = () => {
       <div>
         <h1 className="text-2xl font-bold text-foreground">Repurchase Wallet</h1>
         <p className="text-muted-foreground">
-          An extra 10% of every income's gross amount is auto-deposited here.
+          An extra 8% of every income's gross amount is auto-deposited here.
         </p>
       </div>
 
@@ -136,7 +136,7 @@ const SavingsWallet = () => {
                   <TableHead className="text-muted-foreground">Date</TableHead>
                   <TableHead className="text-muted-foreground">Source Income</TableHead>
                   <TableHead className="text-right text-muted-foreground">Gross</TableHead>
-                  <TableHead className="text-right text-muted-foreground">Credited (10%)</TableHead>
+                  <TableHead className="text-right text-muted-foreground">Credited (8%)</TableHead>
                   <TableHead className="text-right text-muted-foreground">Balance After</TableHead>
                 </TableRow>
               </TableHeader>

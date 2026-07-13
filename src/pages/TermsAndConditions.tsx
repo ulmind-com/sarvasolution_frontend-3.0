@@ -7,7 +7,7 @@ const terms: string[] = [
   'To be eligible for registration, every ID holder must be 18 years plus and submit valid government-issued identity proof. Each member is permitted to register one ID for each PAN card.',
   'KYC approval is mandatory for receiving any payout from the Company.',
   'The minimum eligibility amount for bank transfer is ₹300. Payout will be processed within 4 working days from the closing date.',
-  'TDS and other applicable charges will be deducted as per prevailing tax rules. An additional admin charge of 10% will also be applicable, and an extra deduction of up to 10% for repurchase may be applied, if applicable.',
+  'TDS and other applicable charges will be deducted as per prevailing tax rules. An additional admin charge of 10% will also be applicable, and an extra deduction of up to 8% for repurchase may be applied, if applicable.',
   'To qualify for Matching Income, maintaining two active direct referrals — one on the left side and one on the right side — is mandatory.',
   'Product delivery charges, courier fees, and service charges, if applicable, shall be borne by the customer/distributor separately.',
   'All payments made towards products and services are non-refundable and non-returnable once processed.',

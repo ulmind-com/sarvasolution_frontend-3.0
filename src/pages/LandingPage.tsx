@@ -125,6 +125,11 @@ const LandingPage = () => {
             <div className={isScrolled ? '' : 'brightness-200 contrast-100 drop-shadow-md'}>
               <ThemeToggle />
             </div>
+            <Link to="/franchise/login">
+              <Button variant="outline" className={`font-semibold rounded-full shadow-lg ${isScrolled ? 'border-primary text-primary hover:bg-primary/10' : 'bg-transparent border-white text-white hover:bg-white/10'}`}>
+                Franchise Login
+              </Button>
+            </Link>
             <Link to="/login">
               <Button className={`font-semibold rounded-full shadow-lg ${isScrolled ? 'bg-primary hover:bg-primary/90 text-primary-foreground' : 'bg-white hover:bg-gray-100 text-green-700 hover:text-green-800'}`}>
                 Member Login
